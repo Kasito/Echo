@@ -25,8 +25,8 @@ class Factory: FactoryDelegate {
     }()
     
     private func createVC(withIdStoryboard: String, idVC: String) -> UIViewController {
-        let login = UIStoryboard(name: withIdStoryboard, bundle: Bundle.main)
-        return login.instantiateViewController(withIdentifier: idVC)
+        let vc = UIStoryboard(name: withIdStoryboard, bundle: Bundle.main)
+        return vc.instantiateViewController(withIdentifier: idVC)
     }
     
     private func createLoginConttroller() -> LoginViewController {
@@ -41,6 +41,7 @@ class Factory: FactoryDelegate {
         let vc = createVC(withIdStoryboard: "Main", idVC: "TabBarController") as! TabBarController
         let viewModel = TabBarViewModel()
         vc.viewModel = viewModel
+        
         vc.children.forEach { if let vc = $0 as? SettingsViewController {
             vc.viewModel = SettingsViewModel(apiClient: apiClient)
             vc.delegate = self
