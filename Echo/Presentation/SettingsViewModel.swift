@@ -17,10 +17,14 @@ protocol SettingsViewModelProtocol {
 
 class SettingsViewModel: SettingsViewModelProtocol {
     
-    var apiClient = APIClient()
+    var apiClient: APIClientProtocol?
+    
+    init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
+    }
     
     func logout(completion: @escaping (String?) -> Void) {
-        apiClient.logout {(object, error) in
+        apiClient?.logout {(object, error) in
             if error != nil {
                 completion (error?.localizedDescription)
             }

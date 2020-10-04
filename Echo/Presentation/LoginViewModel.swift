@@ -21,7 +21,7 @@ protocol LoginViewModelProtocol {
 
 class LoginViewModel: LoginViewModelProtocol {
     
-    var apiClient = APIClient()
+    var apiClient: APIClientProtocol?
     var sign: SignType = .login
     
     var body: [String: String]? = [:]
@@ -40,6 +40,10 @@ class LoginViewModel: LoginViewModelProtocol {
     
     var massage: String {
         return "password don't match"
+    }
+    
+    init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
     }
     
     func handleResult(object: ResponseObject<User>?, error: Error?, completion: @escaping (String?) -> Void) {
@@ -61,13 +65,13 @@ class LoginViewModel: LoginViewModelProtocol {
     }
     
     func register(completion: @escaping (String?) -> Void) {
-        apiClient.register(body: body) {(object, error) in
+        apiClient?.register(body: body) {(object, error) in
             self.handleResult(object: object, error: error, completion: completion)
         }
     }
     
     func login(completion: @escaping (String?) -> Void) {
-        apiClient.login(body: body) {(object, error) in
+        apiClient?.login(body: body) {(object, error) in
             self.handleResult(object: object, error: error, completion: completion)
         }
     }

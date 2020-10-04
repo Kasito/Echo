@@ -13,7 +13,6 @@ protocol TabBarViewModelProtocol {
     var secondTabTitle: String { get }
 }
 
-
 class TabBarViewModel: TabBarViewModelProtocol {
     
     var firstTabTitle = "Histogram"

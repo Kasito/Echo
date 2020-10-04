@@ -13,18 +13,18 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var titleNavBar: UINavigationItem! {
         didSet {
-            titleNavBar.title = viewModel.titleNavBar
+            titleNavBar.title = viewModel?.titleNavBar
         }
     }
     
     @IBOutlet weak var logoutButton: UIButton! {
         didSet {
-            logoutButton.setTitle(viewModel.logoutButtonTitle, for: .normal)
+            logoutButton.setTitle(viewModel?.logoutButtonTitle, for: .normal)
         }
     }
     
     @IBAction func logoutButton(_ sender: UIButton) {
-        viewModel.logout { errors in
+        viewModel?.logout { errors in
             if errors != nil {
                 DispatchQueue.main.async {
                     self.showAlert(message: errors)
@@ -37,7 +37,17 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    var viewModel: SettingsViewModel = SettingsViewModel()
+    var viewModel: SettingsViewModelProtocol?
+    var delegate: FactoryDelegate? 
+    
+    init(viewModel: SettingsViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -45,7 +55,7 @@ class SettingsViewController: UIViewController {
     
     func showVC() {
         let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "HomeViewController") as! LoginViewController
+        let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
         vc.modalPresentationStyle = .fullScreen
         self.present(vc, animated: true, completion: nil)
     }

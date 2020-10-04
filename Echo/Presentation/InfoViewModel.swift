@@ -23,7 +23,7 @@ class InfoViewModel: InfoViewModelProtocol {
     
     var updateHandler: VoidBlock?
     
-    var apiClient = APIClient()
+    var apiClient: APIClientProtocol?
     
     var text: String? {
         didSet {
@@ -58,8 +58,12 @@ class InfoViewModel: InfoViewModelProtocol {
         return KeychainService.load(serviceKey: AccessToken.token)
     }
     
+    init(apiClient: APIClientProtocol) {
+        self.apiClient = apiClient
+    }
+    
     func getText(completion: @escaping (String?) -> Void) {
-        apiClient.getText(token: token, locale: locale) { (object, error) -> (Void) in
+        apiClient?.getText(token: token, locale: locale) { (object, error) -> (Void) in
             if error != nil {
                 completion (error?.localizedDescription)
             }

@@ -11,13 +11,13 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var infoLabel: UILabel! {
         didSet {
-            infoLabel.text = viewModel.infoText
+            infoLabel.text = viewModel?.infoText
         }
     }
     
     @IBOutlet weak var accountLabel: UILabel! {
         didSet {
-            accountLabel.text = viewModel.accountLabelName
+            accountLabel.text = viewModel?.accountLabelName
         }
     }
     
@@ -52,32 +52,42 @@ class LoginViewController: UIViewController {
     
     @IBOutlet weak var signUpButton: UIButton! {
         didSet {
-            signUpButton.setTitle(viewModel.signButtonName, for: .normal)
+            signUpButton.setTitle(viewModel?.signButtonName, for: .normal)
             signUpButton.addTarget(self, action: #selector(signUpButtonAction), for: .touchUpInside)
         }
     }
     
-    var viewModel: LoginViewModelProtocol = LoginViewModel()
+    var viewModel: LoginViewModelProtocol?
+    var delegate: FactoryDelegate? 
+    
+//    init(viewModel: LoginViewModelProtocol) {
+//        self.viewModel = viewModel
+//        super.init(nibName: nil, bundle: nil)
+//    }
+//    
+//    required init?(coder: NSCoder) {
+//        fatalError("init(coder:) has not been implemented")
+//    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
     }
     
     func setupSignView() {
-        nameDesignableView.isHidden = viewModel.sign == .login ? true : false
-        confirmPasswordDesignableView.isHidden = viewModel.sign == .login ? true : false
+        nameDesignableView.isHidden = viewModel?.sign == .login ? true : false
+        confirmPasswordDesignableView.isHidden = viewModel?.sign == .login ? true : false
         
-        infoLabel.text = viewModel.infoText
-        accountLabel.text = viewModel.accountLabelName
-        signUpButton.setTitle(viewModel.signButtonName, for: .normal)
+        infoLabel.text = viewModel?.infoText
+        accountLabel.text = viewModel?.accountLabelName
+        signUpButton.setTitle(viewModel?.signButtonName, for: .normal)
     }
     
     func reverseState() {
-        viewModel.sign = viewModel.sign == .login ? .register : .login
+        viewModel?.sign = viewModel?.sign == .login ? .register : .login
     }
     
     func clear() {
-        viewModel.body = [:]
+        viewModel?.body = [:]
         nameTextField.text = nil
         emailAddressTextField.text = nil
         passwordTextField.text = nil
@@ -93,7 +103,7 @@ class LoginViewController: UIViewController {
     
     func checkConfirmPassword() -> Bool {
         if passwordTextField.text != confirmPasswordTextField.text {
-            showAlert(message: viewModel.massage)
+            showAlert(message: viewModel?.massage)
             return false
         } else {
             return true
@@ -108,8 +118,8 @@ class LoginViewController: UIViewController {
     }
     
     @objc func continueButtonAction(sender: UIButton!) {
-        if viewModel.sign == .register && checkConfirmPassword() {
-            viewModel.register { error in
+        if viewModel?.sign == .register && checkConfirmPassword() {
+            viewModel?.register { error in
                 if error != nil {
                     DispatchQueue.main.async {
                         self.showAlert(message: error)
@@ -121,8 +131,8 @@ class LoginViewController: UIViewController {
                 }
             }
             
-        } else if viewModel.sign == .login {
-            viewModel.login { error in
+        } else if viewModel?.sign == .login {
+            viewModel?.login { error in
                 if error != nil {
                     DispatchQueue.main.async {
                         self.showAlert(message: error)
@@ -149,11 +159,11 @@ extension LoginViewController: UITextFieldDelegate {
         guard let text = textField.text else { return }
         switch textField {
         case nameTextField :
-            viewModel.body?[BodyKey.name] = text
+            viewModel?.body?[BodyKey.name] = text
         case emailAddressTextField :
-            viewModel.body?[BodyKey.email] = text
+            viewModel?.body?[BodyKey.email] = text
         case passwordTextField :
-            viewModel.body?[BodyKey.password] = text
+            viewModel?.body?[BodyKey.password] = text
         default:
             break
         }

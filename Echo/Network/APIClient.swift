@@ -7,7 +7,17 @@
 
 import Foundation
 
-class APIClient {
+protocol APIClientProtocol {
+    
+    func register(body: [String: String]?, completion: @escaping ResponseResult<User>)
+    func login(body: [String: String]?, completion: @escaping ResponseResult<User>)
+    func logout(completion: @escaping ResponseResult<String>)
+    func getText(token: String?, locale: String? ,completion: @escaping ResponseResult<String>)
+}
+
+class APIClient: APIClientProtocol {
+    
+    static let shared = APIClient()
     
     let baseURL = "http://apiecho.cf"
     let signUp = "/api/signup/"

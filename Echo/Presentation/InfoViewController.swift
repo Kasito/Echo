@@ -12,7 +12,16 @@ class InfoViewController: UIViewController {
     @IBOutlet weak var localePickerView: UIPickerView!
     @IBOutlet weak var tableView: UITableView!
     
-    var viewModel: InfoViewModelProtocol = InfoViewModel()
+    var viewModel: InfoViewModelProtocol?
+    
+    init(viewModel: InfoViewModelProtocol) {
+        self.viewModel = viewModel
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -21,8 +30,8 @@ class InfoViewController: UIViewController {
     }
     
     func load(numberOfItems: Int) {
-        viewModel.locale = Locale.allCases[numberOfItems].rawValue
-        viewModel.getText { error in
+        viewModel?.locale = Locale.allCases[numberOfItems].rawValue
+        viewModel?.getText { error in
             if error != nil {
                 DispatchQueue.main.async {
                     self.showAlert(message: error)
@@ -39,7 +48,7 @@ class InfoViewController: UIViewController {
     }
     
     private func bindModelToUI() {
-        viewModel.updateHandler = { [weak self] in
+        viewModel?.updateHandler = { [weak self] in
             DispatchQueue.main.async {
                 self?.tableView.reloadData()
             }
@@ -50,7 +59,7 @@ class InfoViewController: UIViewController {
 extension InfoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
     
     func numberOfComponents(in pickerView: UIPickerView) -> Int {
-        return viewModel.numberOfComponents
+        return viewModel?.numberOfComponents ?? 0
     }
     
     func pickerView(_ pickerView: UIPickerView, numberOfRowsInComponent component: Int) -> Int {
@@ -69,19 +78,19 @@ extension InfoViewController: UIPickerViewDelegate, UIPickerViewDataSource {
 extension InfoViewController: UITableViewDelegate, UITableViewDataSource {
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return viewModel.numberOfItems ?? 0
+        return viewModel?.numberOfItems ?? 0
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: InfoCell.reuseIdentifier) as! InfoCell
-        viewModel.setupCell(cell: cell, at: indexPath)
+        viewModel?.setupCell(cell: cell, at: indexPath)
         return cell
     }
     
     func tableView(_ tableView: UITableView, viewForHeaderInSection section: Int) -> UIView? {
         let header = UIView()
         let label = UILabel()
-        label.text = viewModel.headerText
+        label.text = viewModel?.headerText
         label.textAlignment = .center
         label.font = UIFont.systemFont(ofSize: 15, weight: UIFont.Weight.regular)
         header.addSubview(label)
@@ -92,6 +101,6 @@ extension InfoViewController: UITableViewDelegate, UITableViewDataSource {
     }
     
     func tableView(_ tableView: UITableView, heightForHeaderInSection section: Int) -> CGFloat {
-        viewModel.heightForHeader
+        viewModel?.heightForHeader ?? 0
     }
 }

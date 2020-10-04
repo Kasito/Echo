@@ -11,12 +11,12 @@ class TabBarController: UITabBarController {
     
     @IBOutlet weak var tapBarItem: UITabBar! {
         didSet{
-            tapBarItem.items?[0].title = viewModel.firstTabTitle
-            tapBarItem.items?[1].title = viewModel.secondTabTitle
+            tapBarItem.items?[0].title = viewModel?.firstTabTitle
+            tapBarItem.items?[1].title = viewModel?.secondTabTitle
         }
     }
     
-    var viewModel: TabBarViewModelProtocol = TabBarViewModel()
+    var viewModel: TabBarViewModelProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()
