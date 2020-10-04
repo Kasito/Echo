@@ -10,10 +10,11 @@ import UIKit
 protocol FactoryDelegate {
     func makeLogin()
     func makeTabBar()
+    func dismissVC(vc: UIViewController)
 }
 
 class Factory: FactoryDelegate {
-    
+   
     let window: UIWindow?
     
     init(window: UIWindow?) {
@@ -52,6 +53,10 @@ class Factory: FactoryDelegate {
         return vc
     }
     
+    func dismissVC(vc: UIViewController) {
+        vc.dismiss(animated: true)
+    }
+    
     func makeLogin() {
         guard let window = window else { return }
         window.rootViewController = createLoginConttroller()
@@ -60,7 +65,7 @@ class Factory: FactoryDelegate {
     
     func makeTabBar() {
         guard let window = window else { return }
-        window.rootViewController = createTabBarConttroller()
-        window.makeKeyAndVisible()
+            window.rootViewController = self.createTabBarConttroller()
+            window.makeKeyAndVisible()
     }
 }
