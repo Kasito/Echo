@@ -24,7 +24,7 @@ class LoginViewModel: LoginViewModelProtocol {
     var apiClient: APIClientProtocol?
     var sign: SignType = .login
     
-    var body: [String: String]? = [BodyKey.email: "forte@gmail.com", BodyKey.password: "forte"]
+    var body: [String: String]? = [:]
     
     var infoText: String {
         return sign == .login ? "Welcome back" : "Register"

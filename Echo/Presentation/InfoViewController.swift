@@ -25,17 +25,11 @@ class InfoViewController: UIViewController {
         viewModel?.getText { error in
             if error != nil {
                 DispatchQueue.main.async {
-                    self.showAlert(message: error)
+                    let alertController = UIAlertController.create(with: "Error", message: error)
+                    self.present(alertController, animated: true, completion: nil)
                 }
             }
         }
-    }
-    
-    func showAlert(message: String?) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {_ in }
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true, completion: nil)
     }
     
     private func bindModelToUI() {

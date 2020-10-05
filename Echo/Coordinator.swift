@@ -10,7 +10,6 @@ import UIKit
 protocol CoordinatorDelegate {
     func makeLogin()
     func makeTabBar()
-    func dismissVC(vc: UIViewController)
 }
 
 class Coordinator: CoordinatorDelegate {
@@ -51,10 +50,6 @@ class Coordinator: CoordinatorDelegate {
         }
         }
         return vc
-    }
-    
-    func dismissVC(vc: UIViewController) {
-        vc.dismiss(animated: true)
     }
     
     func makeLogin() {

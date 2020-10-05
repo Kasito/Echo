@@ -58,8 +58,8 @@ class LoginViewController: UIViewController {
     }
     
     var viewModel: LoginViewModelProtocol?
-    var delegate: CoordinatorDelegate? 
-        
+    var delegate: CoordinatorDelegate?
+    
     override func viewDidLoad() {
         super.viewDidLoad()
     }
@@ -86,16 +86,10 @@ class LoginViewController: UIViewController {
         confirmPasswordTextField.text = nil
     }
     
-    func showAlert(message: String?) {
-        let alertController = UIAlertController(title: "Error", message: message, preferredStyle: .alert)
-        let okAction = UIAlertAction(title: "OK", style: UIAlertAction.Style.default) {_ in }
-        alertController.addAction(okAction)
-        self.present(alertController, animated: true, completion: nil)
-    }
-    
     func checkConfirmPassword() -> Bool {
         if passwordTextField.text != confirmPasswordTextField.text {
-            showAlert(message: viewModel?.massage)
+            let alertController = UIAlertController.create(with: "Error", message: viewModel?.massage)
+            self.present(alertController, animated: true, completion: nil)
             return false
         } else {
             return true
@@ -107,11 +101,11 @@ class LoginViewController: UIViewController {
             viewModel?.register { error in
                 if error != nil {
                     DispatchQueue.main.async {
-                        self.showAlert(message: error)
+                        let alertController = UIAlertController.create(with: "Error", message: error)
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.delegate?.dismissVC(vc: self)
                         self.delegate?.makeTabBar()
                     }
                 }
@@ -121,11 +115,11 @@ class LoginViewController: UIViewController {
             viewModel?.login { error in
                 if error != nil {
                     DispatchQueue.main.async {
-                        self.showAlert(message: error)
+                        let alertController = UIAlertController.create(with: "Error", message: error)
+                        self.present(alertController, animated: true, completion: nil)
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.delegate?.dismissVC(vc: self)
                         self.delegate?.makeTabBar()
                     }
                 }
