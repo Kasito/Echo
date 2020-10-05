@@ -17,8 +17,6 @@ protocol APIClientProtocol {
 
 class APIClient: APIClientProtocol {
     
-    static let shared = APIClient()
-    
     let baseURL = "http://apiecho.cf"
     let signUp = "/api/signup/"
     let login = "/api/login/"

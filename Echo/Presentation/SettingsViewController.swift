@@ -31,33 +31,18 @@ class SettingsViewController: UIViewController {
                 }
             } else {
                 DispatchQueue.main.async {
-                    self.showVC()
+                    self.delegate?.dismissVC(vc: self)
+                    self.delegate?.makeLogin()
                 }
             }
         }
     }
     
     var viewModel: SettingsViewModelProtocol?
-    var delegate: FactoryDelegate? 
-    
-    init(viewModel: SettingsViewModelProtocol) {
-        self.viewModel = viewModel
-        super.init(nibName: nil, bundle: nil)
-    }
-    
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
-    }
+    var delegate: CoordinatorDelegate? 
     
     override func viewDidLoad() {
         super.viewDidLoad()
-    }
-    
-    func showVC() {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc: UIViewController = storyboard.instantiateViewController(withIdentifier: "LoginViewController") as! LoginViewController
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
     }
     
     func showAlert(message: String?) {

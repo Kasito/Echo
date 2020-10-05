@@ -9,14 +9,14 @@ import UIKit
 
 class TabBarController: UITabBarController {
     
-    @IBOutlet weak var tapBarItem: UITabBar! {
+    @IBOutlet weak var tapBarItem: UITabBar!
+    
+    var viewModel: TabBarViewModelProtocol? {
         didSet{
             tapBarItem.items?[0].title = viewModel?.firstTabTitle
             tapBarItem.items?[1].title = viewModel?.secondTabTitle
         }
     }
-    
-    var viewModel: TabBarViewModelProtocol?
     
     override func viewDidLoad() {
         super.viewDidLoad()

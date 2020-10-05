@@ -58,7 +58,7 @@ class LoginViewController: UIViewController {
     }
     
     var viewModel: LoginViewModelProtocol?
-    var delegate: FactoryDelegate? 
+    var delegate: CoordinatorDelegate? 
         
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -74,7 +74,8 @@ class LoginViewController: UIViewController {
     }
     
     func reverseState() {
-        viewModel?.sign = viewModel?.sign == .login ? .register : .login
+        let currentState = viewModel?.sign
+        viewModel?.sign = currentState == .login ? .register : .login
     }
     
     func clear() {
@@ -101,13 +102,6 @@ class LoginViewController: UIViewController {
         }
     }
     
-    func showVC() {
-        let storyboard: UIStoryboard = UIStoryboard(name: "Main", bundle: nil)
-        let vc: UITabBarController = storyboard.instantiateViewController(withIdentifier: "TabBarController") as! UITabBarController
-        vc.modalPresentationStyle = .fullScreen
-        self.present(vc, animated: true, completion: nil)
-    }
-    
     @objc func continueButtonAction(sender: UIButton!) {
         if viewModel?.sign == .register && checkConfirmPassword() {
             viewModel?.register { error in
@@ -117,7 +111,8 @@ class LoginViewController: UIViewController {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.showVC()
+                        self.delegate?.dismissVC(vc: self)
+                        self.delegate?.makeTabBar()
                     }
                 }
             }
@@ -130,7 +125,8 @@ class LoginViewController: UIViewController {
                     }
                 } else {
                     DispatchQueue.main.async {
-                        self.showVC()
+                        self.delegate?.dismissVC(vc: self)
+                        self.delegate?.makeTabBar()
                     }
                 }
             }
@@ -147,6 +143,7 @@ class LoginViewController: UIViewController {
 extension LoginViewController: UITextFieldDelegate {
     
     func textFieldDidChangeSelection(_ textField: UITextField) {
+        
         guard let text = textField.text else { return }
         switch textField {
         case nameTextField :

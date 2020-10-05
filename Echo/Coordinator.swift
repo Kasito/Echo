@@ -7,13 +7,13 @@
 
 import UIKit
 
-protocol FactoryDelegate {
+protocol CoordinatorDelegate {
     func makeLogin()
     func makeTabBar()
     func dismissVC(vc: UIViewController)
 }
 
-class Factory: FactoryDelegate {
+class Coordinator: CoordinatorDelegate {
    
     let window: UIWindow?
     
@@ -21,8 +21,8 @@ class Factory: FactoryDelegate {
         self.window = window
     }
     
-    var apiClient: APIClient = {
-        return APIClient.shared
+    var apiClient: APIClientProtocol = {
+        return APIClient()
     }()
     
     private func createVC(withIdStoryboard: String, idVC: String) -> UIViewController {
@@ -66,6 +66,5 @@ class Factory: FactoryDelegate {
     func makeTabBar() {
         guard let window = window else { return }
             window.rootViewController = self.createTabBarConttroller()
-            window.makeKeyAndVisible()
     }
 }
